@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS9057: The analyzer assembly 'C:\Program Files\dotnet\packs\Microsoft.NETCore.App.Ref\7.0.0\analyzers\dotnet\cs\Microsoft.Interop.JavaScript.JSImportGenerator.dll' references version '4.4.0.0' of the compiler, which is newer than the currently running version '4.3.0.0'.
+dotnet_diagnostic.CS9057.severity = silent
