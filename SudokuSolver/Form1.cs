@@ -9,89 +9,31 @@ namespace SudokuSolver
 {
     public partial class Form1 : Form
     {
-        SudokuSolver? sudokuSolver;
-        const int sideLength = 9;
-        RichTextBox[,] sudokuGridGUI = new RichTextBox[sideLength, sideLength];
-        readonly Color background = Color.White;
-        readonly Color newDigit = Color.Beige;
-        int iterationDelay = default;
-        bool applyIterationDelay = false;
-        readonly Color textBoxColorOK = Color.Green;
-        readonly Color textBoxColorNotOK = Color.Red;
+        SudokuSolver sudokuSolver;
+        const short sideLength = 9;
         public Form1()
         {
             InitializeComponent();
             ConfigSudokuGrid();
-            sudokuGridGUI = new RichTextBox[sideLength, sideLength]
-            {
-                { richTextBox1, richTextBox2, richTextBox3, richTextBox4, richTextBox5, richTextBox6, richTextBox7, richTextBox8, richTextBox9 },
-                { richTextBox10, richTextBox11, richTextBox12, richTextBox13, richTextBox14, richTextBox15, richTextBox16, richTextBox17, richTextBox18 },
-                { richTextBox19, richTextBox20, richTextBox21, richTextBox22, richTextBox23, richTextBox24, richTextBox25, richTextBox26, richTextBox27 },
-                { richTextBox28, richTextBox29, richTextBox30, richTextBox31, richTextBox32, richTextBox33, richTextBox34, richTextBox35, richTextBox36 },
-                { richTextBox37, richTextBox38, richTextBox39, richTextBox40, richTextBox41, richTextBox42, richTextBox43, richTextBox44, richTextBox45 },
-                { richTextBox46, richTextBox47, richTextBox48, richTextBox49, richTextBox50, richTextBox51, richTextBox52, richTextBox53, richTextBox54 },
-                { richTextBox55, richTextBox56, richTextBox57, richTextBox58, richTextBox59, richTextBox60, richTextBox61, richTextBox62, richTextBox63 },
-                { richTextBox64, richTextBox65, richTextBox66, richTextBox67, richTextBox68, richTextBox69, richTextBox70, richTextBox71, richTextBox72 },
-                { richTextBox73, richTextBox74, richTextBox75, richTextBox76, richTextBox77, richTextBox78, richTextBox79, richTextBox80, richTextBox81 }
-            };
             ConfigUI();
-
-            sudokuSolver = new SudokuSolver(10);
-            sudokuSolver!.NewIterationCompleted += UpdateSudokuGridGUI;
-            sudokuSolver!.SudokuSolved += SudokuSolved;
-            sudokuSolver!.SudokuUnsolvable += SudokuUnsolvable;
+            Button_solve_Click(null, new EventArgs());
         }
-        private void UpdateSudokuGridGUI(int[,] sudokuGrid)
+        private void UpdateSudokuGridGUI(short[,] sudokuGrid)
         {
-            Invoke(() =>
+            short gridIndex = 0;
+            foreach (var cell in GetSudokuGridCells())
             {
-                label_solveTimeIndicator.Text = sudokuSolver!.TimeSpentSolving.ToString() + " ms";
-                for (int i = 0; i < sideLength; i++)
+                BeginInvoke(new Action(() =>
                 {
-                    for (int j = 0; j < sideLength; j++)
-                    {
-                        string solvedDigit = sudokuGrid[i, j].ToString();
-                        RichTextBox textBox = sudokuGridGUI[i, j];
-                        if(textBox.Text == solvedDigit)
-                        {
-                            textBox.BackColor = background;
-                        }
-                        else
-                        {
-                            textBox.BackColor = newDigit;
-                            textBox.Text = solvedDigit;
-                        }
-                        textBox.Update();
-                    }
-                }
-            });
+                    cell.Text = sudokuGrid[gridIndex / sideLength, gridIndex % sideLength].ToString();
+                    gridIndex++;
+                }));
+            }
         }
         private void ConfigUI()
         {
             button_solve.Click += Button_solve_Click;
-            button_reset.Click += Button_reset_Click;
-            for (int i = 0; i < sideLength; i++)
-            {
-                for (int j = 0; j < sideLength; j++)
-                {
-                    sudokuGridGUI[i, j].TabIndex = i * sideLength + j + 2;
-                }
-            }
         }
-
-        private void Button_reset_Click(object? sender, EventArgs e)
-        {
-            for (int i = 0; i < sideLength; i++)
-            {
-                for (int j = 0; j < sideLength; j++)
-                {
-                    RichTextBox textBox = sudokuGridGUI[i, j];
-                    textBox.BackColor = background;
-                    textBox.Text = String.Empty;
-                }
-            }
-        }
-
         private static void GetRowAndColumnFromButton(string buttonName, out int row, out int column)
         {
             int splitAt = 11;
@@ -107,46 +49,48 @@ namespace SudokuSolver
         }
         private void Button_solve_Click(object? sender, EventArgs e)
         {
-            int[,] sudokuNumbers = new int[sideLength, sideLength];
+            short[,] sudokuNumbers = new short[sideLength, sideLength];
             foreach (var cell in GetSudokuGridCells())
             {
                 GetRowAndColumnFromButton(cell.Name, out int row, out int column);
-                sudokuNumbers[row, column] = int.TryParse(cell.Text, out int number) ? number : -1;
+                sudokuNumbers[row, column] = short.TryParse(cell.Text, out short number) ? number : (short)-1;
             }
 
+            sudokuNumbers = new short[sideLength, sideLength]
+            {
+                { 1, -1, 7, -1, -1, 6, 4, 5, -1 },
+                { -1, 2, 5, 3, 4, -1, -1, -1, 8 },
+                { -1, 6, -1, -1, -1, 1, -1, 7, -1 },
+                { -1, 5, 3, -1, -1, -1, -1, 2, 9 },
+                { 6, 1, -1, -1, -1, 9, 8, -1, -1 },
+                { -1, -1, -1, 6, -1, 2, -1, -1, 7 },
+                { -1, -1, 1, -1, 9, 3, 2, -1, -1 },
+                { -1, -1, 8, -1, -1, -1, -1, -1, -1 },
+                { -1, 4, -1, -1, 7, 6, 5, 9, 1 }
+            };
+
+            sudokuSolver = new SudokuSolver(sudokuNumbers);
             button_solve.Enabled = false;
-            button_reset.Enabled = false;
-            checkBox1.Enabled = false;
-            richTextBox_setSolvingDelay.Enabled = false;
-            sudokuSolver!.SudokuGrid = sudokuNumbers;
-            if (iterationDelay != default && applyIterationDelay) sudokuSolver.IterationDelay = iterationDelay;
-            else sudokuSolver.IterationDelay = default;
-            Task solving = sudokuSolver.SolveAsync();
+            sudokuSolver!.NewIterationCompleted += UpdateSudokuGridGUI;
+            sudokuSolver!.SudokuSolved += SudokuSolved;
+            sudokuSolver!.SudokuUnsolvable += SudokuUnsolvable;
+            Task solving = sudokuSolver.Solve();
         }
 
         private void SudokuUnsolvable()
         {
             BeginInvoke(() =>
             {
-                button_solve.Enabled = true;
-                button_reset.Enabled = true;
-                checkBox1.Enabled = true;
-                richTextBox_setSolvingDelay.Enabled = true;
-                MessageBox.Show("The specified sudoku is unsolvable.", "Sudoku unsolvable", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("unsolvable");
             });
         }
 
-        private void SudokuSolved(int[,] sudokuGrid)
+        private void SudokuSolved()
         {
-            Invoke(() =>
+            BeginInvoke(() =>
             {
                 button_solve.Enabled = true;
-                button_reset.Enabled = true;
-                checkBox1.Enabled = true;
-                richTextBox_setSolvingDelay.Enabled = true;
-                //label_solveTimeIndicator.Text = sudokuSolver!.TimeSpentSolving.ToString() + " ms";
             });
-            UpdateSudokuGridGUI(sudokuGrid);
         }
         private IEnumerable<RichTextBox> GetSudokuGridCells()
         {
@@ -177,7 +121,7 @@ namespace SudokuSolver
 
             string cellText;
             char lastChar = 'x';
-            int number = -1;
+            short number = -1;
             if (cell!.Text.Length == 1) cellText = cell!.Text;
             else if (cell!.Text.Length == 0) return;
             else
@@ -186,14 +130,14 @@ namespace SudokuSolver
                 lastChar = cell.Text[1];
             }
 
-            if (int.TryParse(cellText, out number) && number != 0)
+            if (short.TryParse(cellText, out number) && number != 0)
             {
                 cell.Text = cellText;
             }
             else
             {
                 cell.Text = cell.Text[..1];
-                if (!int.TryParse(cell.Text, out _) || lastChar == ' ' || number == 0) cell.Text = string.Empty;
+                if (!short.TryParse(cell.Text, out _) || lastChar == ' ' || number == 0) cell.Text = string.Empty;
             }
             cell.SelectionStart = 1; // put cursor right of number
         }
@@ -202,193 +146,95 @@ namespace SudokuSolver
             int splitAt = 11;
             return int.TryParse(cell.Name[splitAt..], out _);
         }
-        private void richTextBox_setSolvingDelay_TextChanged(object sender, EventArgs e)
-        {
-            if(richTextBox_setSolvingDelay.Text.Length > 4)
-            {
-                richTextBox_setSolvingDelay.Text = richTextBox_setSolvingDelay.Text[..4];
-                return;
-            }
-            if(int.TryParse(richTextBox_setSolvingDelay.Text, out iterationDelay))
-            {
-                richTextBox_setSolvingDelay.BackColor = textBoxColorOK;
-            }
-            else
-            {
-                richTextBox_setSolvingDelay.BackColor = textBoxColorNotOK;
-                iterationDelay = 0;
-            }
-        }
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            applyIterationDelay = !applyIterationDelay;
-        }
     }
     public class SudokuSolver
     {
-        public int[,] SudokuGrid {
-            get => CellArrayToShortArray(sudokuGrid);
-            set
-            {
-                if (value.GetLength(0) != sideLength || value.GetLength(1) != sideLength)
-                {
-                    throw new ArgumentException("Grid either not initialized or is incorrectly sized");
-                }
-                sudokuGrid = CreateCellGrid(value);
-                if (!CheckIfSudokuValid())
-                {
-                    OnSudokuUnsolvable();
-                    sudokuGrid = null;
-                }
-            } 
-        }
-        Cell[,]? sudokuGrid;
-        const int sideLength = 9;
-        const int emptyCellValue = -1;
-        const int smallestDigit = 1;
-        const int largestDigit = 9;
+        Cell[,] sudokuGrid;
+        const short sideLength = 9;
+        const short emptyCellValue = -1;
+        const short smallestDigit = 1;
+        const short largestDigit = 9;
         readonly Stopwatch stopwatch = new Stopwatch();
-        int _updateDelay = default;
-        public int UpdateDelay { 
-            get => _updateDelay;
-            set
-            {
-                _updateDelay = Math.Abs(value);
-            }
-        }
-        int _iterationDelay = default;
-        public int IterationDelay
-        {
-            get => _iterationDelay;
-            set
-            {
-                _iterationDelay = Math.Abs(value);
-            }
-        }
         public long TimeSpentSolving { get => stopwatch.ElapsedMilliseconds; }
-        public SudokuSolver(int[,] filledSudokuGrid, int updateDelay)
+        public SudokuSolver(short[,] filledSudokuGrid)
         {
             sudokuGrid = CreateCellGrid(filledSudokuGrid);
-            UpdateDelay = updateDelay;
         }
-        public SudokuSolver(int[,] filledSudokuGrid)
-        {
-            SudokuGrid = filledSudokuGrid;
-        }
-        public SudokuSolver(int updateDelay)
-        {
-            UpdateDelay = updateDelay;
-        }
-        public SudokuSolver()
-        {
-        }
-        private static Cell[,] CreateCellGrid(int[,] grid)
+        private static Cell[,] CreateCellGrid(short[,] grid)
         {
             Cell[,] cellGrid = new Cell[sideLength, sideLength];
-            for (int i = 0; i < sideLength; i++)
+            for (short i = 0; i < sideLength; i++)
             {
-                for (int j = 0; j < sideLength; j++)
+                for (short j = 0; j < sideLength; j++)
                 {
-                    int cellValue = grid[i, j];
-                    cellGrid[i, j] = new Cell(cellValue, cellValue != emptyCellValue, new Point(i, j));
+                    short cellValue = grid[i, j];
+                    cellGrid[i, j] = new Cell(cellValue, cellValue != emptyCellValue, new Point(j, i));
                 }
             }
             return cellGrid;
         }
-        public async Task SolveAsync()
+        private static Cell Backtrack(Cell original)
         {
-            if (sudokuGrid is null) return;
-            stopwatch.Restart();
-            await Task.Run(async () =>
+            Cell parent = original;
+            while(parent.parent is not null)
             {
-                if(_iterationDelay != default)
-                {
-                    Task continuous = RaiseIterationEventContinously();
-                    await IterateAsyncWithDelay();
-                }
-                else
-                {
-                    await IterateAsync();
-                }
-                stopwatch.Stop();
-                OnSudokuSolved();
-            });
+                parent = parent.parent;
+            }
+            return parent;
         }
-        private async Task RaiseIterationEventContinously()
+        public async Task Solve()
         {
             await Task.Run(async () =>
             {
-                while(stopwatch.IsRunning)
+                sudokuGrid.GetLength(0);
+                Cell? currentCell = FindEmptyCell();
+                bool forceCellAssign = false;
+                while(true)
                 {
-                    OnNewIterationCompleted();
-                    await Task.Delay(_updateDelay);
+                    if(currentCell is null) break;
+                    bool cellAssigned = false;
+                    for (short i = smallestDigit; i <= largestDigit; i++)
+                    {
+                        currentCell.value = i;
+                        if (cellAssigned = IsStepValid(currentCell))
+                        {
+                            Cell newCell = FindEmptyCell();
+                            newCell!.parent = currentCell;
+                            currentCell = newCell;
+                            break;
+                        }
+                    }
                 }
+                
+                OnSudokuUnsolvable();
             });
         }
-        public bool CheckIfSudokuValid()
+        private Cell? FindNextCell()
+        {
+            Cell emptyCell = FindEmptyCell();
+            return null;
+
+        }
+        private bool IsSudokuSolved()
         {
             for (int i = 0; i < sideLength; i++)
             {
-                SudokuSquare square = (SudokuSquare)Math.Pow(2, i);
-                var rowDigits = GetRowDigits(i);
-                var columnDigits = GetColumnDigits(i);
-                var subgridDigits = GetDigitsInSquare(square);
-                for (int digit = smallestDigit; digit <= largestDigit; digit++)
+                for (int j = 0; j < sideLength; j++)
                 {
-                    bool rowOK = rowDigits[digit] <= 1;
-                    bool columnOK = columnDigits[digit] <= 1;
-                    bool squareOK = subgridDigits[digit] <= 1;
-                    if (!(rowOK && columnOK && squareOK)) return false;
+                    if (sudokuGrid[i, j].value == emptyCellValue) return false;
                 }
             }
             return true;
         }
-        private async Task<bool> IterateAsyncWithDelay()
+        private bool IsStepValid(Cell cell)
         {
-            await Task.Delay(_iterationDelay);
-            Cell? nextEmptyCell = FindEmptyCell();
-            if (nextEmptyCell is null) return true;
-
-            for (int digit = smallestDigit; digit <= largestDigit; digit++)
-            {
-                if(IsStepValid(nextEmptyCell, digit))
-                {
-                    sudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
-
-                    if (await IterateAsyncWithDelay()) return true;
-
-                    sudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
-                }
-            }
-            return false;
-        }
-        private async Task<bool> IterateAsync()
-        {
-            Cell? nextEmptyCell = FindEmptyCell();
-            if (nextEmptyCell is null) return true;
-
-            for (int digit = smallestDigit; digit <= largestDigit; digit++)
-            {
-                if (IsStepValid(nextEmptyCell, digit))
-                {
-                    sudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
-
-                    if (await IterateAsync()) return true;
-
-                    sudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
-                }
-            }
-            return false;
-        }
-        private bool IsStepValid(Cell cell, int digit)
-        {
-            var rowGroup = GetRowDigits(cell.location.x);
-            var columnGroup = GetColumnDigits(cell.location.y);
+            var rowGroup = GetRowDigits(cell.location.y);
+            var columnGroup = GetColumnDigits(cell.location.x);
             var squareGroup = GetDigitsInSquare(PointToSquare(cell.location));
-            bool rowOK = !DoesDigitRepeat(digit, rowGroup);
-            bool columnOK = !DoesDigitRepeat(digit, columnGroup);
-            bool squareOK = !DoesDigitRepeat(digit, squareGroup);
-            return rowOK && columnOK && squareOK;
+            bool rowOK = !DoesDigitRepeat(cell.value, rowGroup);
+            bool columnOK = !DoesDigitRepeat(cell.value, columnGroup);
+            bool squareOK = !DoesDigitRepeat(cell.value, squareGroup);
+            return !cell.isReadOnly && rowOK && columnOK && squareOK;
         }
         private Cell? FindEmptyCell()
         {
@@ -396,8 +242,8 @@ namespace SudokuSolver
             {
                 for (int j = 0; j < sideLength; j++)
                 {
-                    Cell cell = sudokuGrid![i, j];
-                    if (cell.value == emptyCellValue) return cell;
+                    Cell cell = sudokuGrid[i, j];
+                    if (!cell.isReadOnly && cell.value == emptyCellValue) return cell;
                 }
             }
             return null;
@@ -428,53 +274,72 @@ namespace SudokuSolver
                     return SudokuSquare.NONE;
             }
         }
-        private bool DoesDigitRepeat(int digit, Dictionary<int, int> group)
+        private bool IsGroupComplete(Dictionary<short, short> group, out short missingMemberIndex)
+        {
+            for (missingMemberIndex = 0; missingMemberIndex < sideLength; missingMemberIndex++)
+            {
+                if (group[missingMemberIndex] == 0) return false;
+            }
+            return true;
+        }
+        private bool DoesDigitRepeat(short digit, Dictionary<short, short> group)
         {
             if (digit == emptyCellValue) return false;
-            return group[digit] == 1;
+            return group[digit] > 1;
         }
-        private Dictionary<int, int> GetRowDigits(int row)
+        private Cell GetStartingCell()
         {
-            Dictionary<int, int> groupedNumbers = CreateGroupedNumbersDictionary();
-            for (int j = 0; j < sideLength; j++)
-            {
-                int value = sudokuGrid![row, j].value;
-                if (value != emptyCellValue) groupedNumbers[value]++;
-            }
-            return groupedNumbers;
-        }
-        private Dictionary<int, int> GetColumnDigits(int column)
-        {
-            Dictionary<int, int> groupedNumbers = CreateGroupedNumbersDictionary();
             for (int i = 0; i < sideLength; i++)
             {
-                int value = sudokuGrid![i, column].value;
+                for (int j = 0; j < sideLength; j++)
+                {
+                    if(!sudokuGrid[i, j].isReadOnly) return sudokuGrid[i, j];
+                }
+            }
+            throw new ArgumentException("There are no missing numbers");
+        }
+        private Dictionary<short, short> GetRowDigits(short row)
+        {
+            Dictionary<short, short> groupedNumbers = CreateGroupedNumbersDictionary();
+            for (int j = 0; j < sideLength; j++)
+            {
+                short value = sudokuGrid[row, j].value;
                 if (value != emptyCellValue) groupedNumbers[value]++;
             }
             return groupedNumbers;
         }
-        private Dictionary<int, int> GetDigitsInSquare(SudokuSquare square)
+        private Dictionary<short, short> GetColumnDigits(short column)
         {
-            Dictionary<int, int> groupedNumbers = CreateGroupedNumbersDictionary();
+            Dictionary<short, short> groupedNumbers = CreateGroupedNumbersDictionary();
+            for (int i = 0; i < sideLength; i++)
+            {
+                short value = sudokuGrid[i, column].value;
+                if (value != emptyCellValue) groupedNumbers[value]++;
+            }
+            return groupedNumbers;
+        }
+        private Dictionary<short, short> GetDigitsInSquare(SudokuSquare square)
+        {
+            Dictionary<short, short> groupedNumbers = CreateGroupedNumbersDictionary();
             Point squareCoordsMultiplier = map[square];
-            int multiplierX = squareCoordsMultiplier.x;
-            int multiplierY = squareCoordsMultiplier.y;
-            int squareSideLength = 3;
-            int limitX = squareSideLength + squareSideLength * (multiplierX + 1);
-            int limitY = squareSideLength + squareSideLength * (multiplierY + 1);
+            short multiplierX = squareCoordsMultiplier.x;
+            short multiplierY = squareCoordsMultiplier.y;
+            short squareSideLength = 3;
+            int limitX = squareSideLength * (multiplierX + 1);
+            int limitY = squareSideLength * (multiplierY + 1);
             for (int i = squareSideLength + squareSideLength * multiplierX; i < limitX; i++)
             {
                 for (int j = squareSideLength + squareSideLength * multiplierY; j < limitY; j++)
                 {
-                    int value = sudokuGrid![i, j].value;
+                    short value = sudokuGrid[i, j].value;
                     if (value != emptyCellValue) groupedNumbers[value]++;
                 }
             }
             return groupedNumbers;
         }
-        private Dictionary<int, int> CreateGroupedNumbersDictionary()
+        private Dictionary<short, short> CreateGroupedNumbersDictionary()
         {
-            return new Dictionary<int, int>()
+            return new Dictionary<short, short>()
             {
                 { 1, 0 },
                 { 2, 0 },
@@ -487,42 +352,44 @@ namespace SudokuSolver
                 { 9, 0 }
             };
         }
-        public delegate void NewIterationCompletedHandler(int[,] sudokuGrid);
+        public delegate void NewIterationCompletedHandler(short[,] sudokuGrid);
         public event NewIterationCompletedHandler? NewIterationCompleted;
-        public delegate void SudokuSolvedHandler(int[,] sudokuGrid);
+        public delegate void SudokuSolvedHandler();
         public event SudokuSolvedHandler? SudokuSolved;
         public delegate void SudokuUnsolvableHandler();
         public event SudokuUnsolvableHandler? SudokuUnsolvable;
         protected virtual void OnNewIterationCompleted()
         {
-            NewIterationCompleted?.Invoke(CellArrayToShortArray(sudokuGrid));
+            NewIterationCompleted?.Invoke(RandomArray());
         }
         protected virtual void OnSudokuSolved()
         {
-            SudokuSolved?.Invoke(CellArrayToShortArray(sudokuGrid));
+            SudokuSolved?.Invoke();
         }
         protected virtual void OnSudokuUnsolvable()
         {
             SudokuUnsolvable?.Invoke();
         }
-        static int[,] CellArrayToShortArray(Cell[,]? cells)
+        private short[,] RandomArray()
         {
-            int[,] array = new int[sideLength, sideLength];
+            short[,] arr = new short[sideLength, sideLength];
+            Random random = new Random();
             for (int i = 0; i < sideLength; i++)
             {
                 for (int j = 0; j < sideLength; j++)
                 {
-                    array[i, j] = cells[i, j].value;
+                    arr[i, j] = (short)random.Next(1, 10);
                 }
             }
-            return array;
+            return arr;
         }
         protected class Cell
         {
-            internal int value;
+            internal short value;
             internal bool isReadOnly;
             internal Point location;
-            internal Cell(int value, bool isReadOnly, Point location)
+            internal Cell? parent;
+            internal Cell(short value, bool isReadOnly, Point location)
             {
                 this.value = value;
                 this.isReadOnly = isReadOnly;
@@ -535,9 +402,9 @@ namespace SudokuSolver
         }
         protected struct Point
         {
-            internal int x;
-            internal int y;
-            internal Point(int x, int y)
+            internal short x;
+            internal short y;
+            internal Point(short x, short y)
             {
                 this.x = x;
                 this.y = y;
@@ -563,15 +430,15 @@ namespace SudokuSolver
 
         static readonly Dictionary<SudokuSquare, Point> map = new Dictionary<SudokuSquare, Point>()
         {
-            { SudokuSquare.N,      new Point( 0, -1) },
-            { SudokuSquare.NE,     new Point( 1, -1) },
-            { SudokuSquare.E,      new Point( 1,  0) },
-            { SudokuSquare.SE,     new Point( 1,  1) },
-            { SudokuSquare.S,      new Point( 0,  1) },
-            { SudokuSquare.SW,     new Point(-1,  1) },
-            { SudokuSquare.W,      new Point(-1,  0) },
+            { SudokuSquare.N,      new Point(0, -1)  },
+            { SudokuSquare.NE,     new Point(1, -1)  },
+            { SudokuSquare.E,      new Point(1, 0)   },
+            { SudokuSquare.SE,     new Point(1, 1)   },
+            { SudokuSquare.S,      new Point(0, -1)  },
+            { SudokuSquare.SW,     new Point(-1, 1)  },
+            { SudokuSquare.W,      new Point(-1, 0)  },
             { SudokuSquare.NW,     new Point(-1, -1) },
-            { SudokuSquare.CENTER, new Point( 0,  0) }
+            { SudokuSquare.CENTER, new Point(0, 0)   }
         };
 
     }

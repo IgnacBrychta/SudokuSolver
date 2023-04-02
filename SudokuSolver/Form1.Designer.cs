@@ -1122,7 +1122,7 @@
             this.richTextBox_setSolvingDelay.Size = new System.Drawing.Size(202, 77);
             this.richTextBox_setSolvingDelay.TabIndex = 88;
             this.richTextBox_setSolvingDelay.Text = "";
-            this.richTextBox_setSolvingDelay.TextChanged += new System.EventHandler(this.richTextBox_setSolvingDelay_TextChanged);
+            //this.richTextBox_setSolvingDelay.TextChanged += new System.EventHandler(this.richTextBox_setSolvingDelay_TextChanged);
             // 
             // checkBox1
             // 
@@ -1134,7 +1134,7 @@
             this.checkBox1.TabIndex = 86;
             this.checkBox1.Text = "Apply delay";
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            //this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // groupBox12
             // 
