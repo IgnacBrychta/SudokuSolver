@@ -1058,7 +1058,7 @@
             this.button_solve.Location = new System.Drawing.Point(1016, 828);
             this.button_solve.Name = "button_solve";
             this.button_solve.Size = new System.Drawing.Size(287, 160);
-            this.button_solve.TabIndex = 1;
+            this.button_solve.TabIndex = 82;
             this.button_solve.Text = "Solve";
             this.button_solve.UseVisualStyleBackColor = true;
             // 
@@ -1068,7 +1068,7 @@
             this.button_reset.Location = new System.Drawing.Point(1016, 650);
             this.button_reset.Name = "button_reset";
             this.button_reset.Size = new System.Drawing.Size(287, 160);
-            this.button_reset.TabIndex = 2;
+            this.button_reset.TabIndex = 83;
             this.button_reset.Text = "Reset";
             this.button_reset.UseVisualStyleBackColor = true;
             // 
@@ -1078,7 +1078,7 @@
             this.label_solveTime.Location = new System.Drawing.Point(6, 19);
             this.label_solveTime.Name = "label_solveTime";
             this.label_solveTime.Size = new System.Drawing.Size(275, 130);
-            this.label_solveTime.TabIndex = 3;
+            this.label_solveTime.TabIndex = 85;
             this.label_solveTime.Text = "Time:";
             this.label_solveTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -1088,7 +1088,7 @@
             this.label_solveTimeIndicator.Location = new System.Drawing.Point(6, 153);
             this.label_solveTimeIndicator.Name = "label_solveTimeIndicator";
             this.label_solveTimeIndicator.Size = new System.Drawing.Size(275, 105);
-            this.label_solveTimeIndicator.TabIndex = 4;
+            this.label_solveTimeIndicator.TabIndex = 84;
             this.label_solveTimeIndicator.Text = "ms";
             this.label_solveTimeIndicator.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -1111,7 +1111,7 @@
             this.label1.Location = new System.Drawing.Point(55, 89);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(182, 46);
-            this.label1.TabIndex = 2;
+            this.label1.TabIndex = 87;
             this.label1.Text = "Delay [ms]:";
             // 
             // richTextBox_setSolvingDelay
@@ -1120,7 +1120,7 @@
             this.richTextBox_setSolvingDelay.Location = new System.Drawing.Point(44, 138);
             this.richTextBox_setSolvingDelay.Name = "richTextBox_setSolvingDelay";
             this.richTextBox_setSolvingDelay.Size = new System.Drawing.Size(202, 77);
-            this.richTextBox_setSolvingDelay.TabIndex = 1;
+            this.richTextBox_setSolvingDelay.TabIndex = 88;
             this.richTextBox_setSolvingDelay.Text = "";
             this.richTextBox_setSolvingDelay.TextChanged += new System.EventHandler(this.richTextBox_setSolvingDelay_TextChanged);
             // 
@@ -1131,7 +1131,7 @@
             this.checkBox1.Location = new System.Drawing.Point(24, 22);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(213, 50);
-            this.checkBox1.TabIndex = 0;
+            this.checkBox1.TabIndex = 86;
             this.checkBox1.Text = "Apply delay";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);

@@ -74,7 +74,7 @@ namespace SudokuSolver
             {
                 for (int j = 0; j < sideLength; j++)
                 {
-                    sudokuGridGUI[j, i].TabIndex = i * sideLength + j + 2;
+                    sudokuGridGUI[i, j].TabIndex = i * sideLength + j + 2;
                 }
             }
         }
