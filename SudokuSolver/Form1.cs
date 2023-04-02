@@ -173,39 +173,70 @@ namespace SudokuSolver
             }
             return cellGrid;
         }
+        private static Cell Backtrack(Cell original)
+        {
+            Cell parent = original;
+            while(parent.parent is not null)
+            {
+                parent = parent.parent;
+            }
+            return parent;
+        }
         public async Task Solve()
         {
             await Task.Run(async () =>
             {
-                Cell[,] solvingGrid = (Cell[,])sudokuGrid.Clone();
-                Stack<Cell[,]> stack = new Stack<Cell[,]>();
-                stack.Push(solvingGrid);
-
-                while(stack.Count > 0)
+                sudokuGrid.GetLength(0);
+                Cell? currentCell = FindEmptyCell();
+                bool forceCellAssign = false;
+                while(true)
                 {
-                    Cell[,] currentGrid = stack.Pop();
-                    Cell? cell = FindEmptyCell();
-                    if(cell is null)
-                    {
-                        OnNewIterationCompleted();
-                        OnSudokuSolved();
-                        return;
-                    }
+                    if(currentCell is null) break;
+                    bool cellAssigned = false;
                     for (short i = smallestDigit; i <= largestDigit; i++)
                     {
-                        cell.value = i;
-                        if (IsStepValid(ref currentGrid, cell))
+                        currentCell.value = i;
+                        if (cellAssigned = IsStepValid(currentCell))
                         {
-                            
-                            stack.Push(currentGrid);
+                            Cell newCell = FindEmptyCell();
+                            newCell!.parent = currentCell;
+                            currentCell = newCell;
                             break;
                         }
                     }
+                    if(forceCellAssign && !cellAssigned)
+                    {
+                        currentCell = currentCell.parent;
+                        continue;
+                    }
+                    if(!cellAssigned)
+                    {
+                        currentCell = currentCell.parent;
+                        forceCellAssign = true;
+                    }
                 }
+                
                 OnSudokuUnsolvable();
             });
         }
-        private bool IsStepValid(ref Cell[,] grid, Cell cell)
+        private Cell? FindNextCell()
+        {
+            Cell emptyCell = FindEmptyCell();
+            return null;
+
+        }
+        private bool IsSudokuSolved()
+        {
+            for (int i = 0; i < sideLength; i++)
+            {
+                for (int j = 0; j < sideLength; j++)
+                {
+                    if (sudokuGrid[i, j].value == emptyCellValue) return false;
+                }
+            }
+            return true;
+        }
+        private bool IsStepValid(Cell cell)
         {
             var rowGroup = GetRowDigits(cell.location.y);
             var columnGroup = GetColumnDigits(cell.location.x);
@@ -367,6 +398,7 @@ namespace SudokuSolver
             internal short value;
             internal bool isReadOnly;
             internal Point location;
+            internal Cell? parent;
             internal Cell(short value, bool isReadOnly, Point location)
             {
                 this.value = value;
