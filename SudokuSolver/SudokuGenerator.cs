@@ -4,7 +4,7 @@ public sealed class SudokuGenerator : Sudoku
 {
 	Cell[,]? sudokuGrid = new Cell[sideLength, sideLength];
 	public Difficulty difficulty;
-	Random random = new Random();
+	readonly Random random = new Random();
 	public SudokuGenerator(Difficulty difficulty)
 	{
 		this.difficulty = difficulty;
@@ -25,7 +25,7 @@ public sealed class SudokuGenerator : Sudoku
 
 	private void ApplySelectedDifficulty()
 	{
-		int numbersToRemove = 0;
+		int numbersToRemove;
 		switch (difficulty)
 		{
 			case Difficulty.EASY:

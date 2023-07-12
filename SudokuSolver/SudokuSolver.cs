@@ -83,11 +83,13 @@ public class SudokuSolver : Sudoku
 			if (_iterationDelay != default)
 			{
 				Task continuous = RaiseIterationEventContinously();
-				IterateWithDelay();
+				bool solved = IterateWithDelay();
+				if(!solved) OnSudokuUnsolvable();
 			}
 			else
 			{
-				Iterate();
+				bool solved = Iterate();
+				if(!solved) OnSudokuUnsolvable();
 			}
 		});
 		stopwatch.Stop();
