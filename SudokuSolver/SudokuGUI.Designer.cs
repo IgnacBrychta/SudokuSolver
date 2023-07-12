@@ -681,7 +681,6 @@
 			groupBox7.Size = new Size(308, 319);
 			groupBox7.TabIndex = 5;
 			groupBox7.TabStop = false;
-			groupBox7.Enter += groupBox7_Enter;
 			// 
 			// richTextBox34
 			// 

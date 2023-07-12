@@ -300,9 +300,4 @@ public partial class SudokuGUI : Form
 		_ = sudokuGenerator!.GenerateAsync();
 		ResetSudokuGridBackground();
 	}
-
-	private void groupBox7_Enter(object sender, EventArgs e)
-	{
-
-	}
 }
