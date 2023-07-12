@@ -148,7 +148,7 @@ public partial class SudokuGUI : Form
 
 	private void Button_solve_Click(object? sender, EventArgs e)
 	{
-		if(applyIterationDelay && !iterationDelayValid)
+		if (applyIterationDelay && !iterationDelayValid)
 		{
 			MessageBox.Show(
 				"Cannot solve, iteration delay is checked, but its value is invalid.",
@@ -299,5 +299,10 @@ public partial class SudokuGUI : Form
 		sudokuGenerator!.difficulty = selectedDifficulty;
 		_ = sudokuGenerator!.GenerateAsync();
 		ResetSudokuGridBackground();
+	}
+
+	private void groupBox7_Enter(object sender, EventArgs e)
+	{
+
 	}
 }

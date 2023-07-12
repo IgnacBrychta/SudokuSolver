@@ -283,7 +283,7 @@
 			groupBox3.Name = "groupBox3";
 			groupBox3.Padding = new Padding(20);
 			groupBox3.Size = new Size(308, 319);
-			groupBox3.TabIndex = 13;
+			groupBox3.TabIndex = 1;
 			groupBox3.TabStop = false;
 			// 
 			// richTextBox4
@@ -382,7 +382,7 @@
 			groupBox4.Name = "groupBox4";
 			groupBox4.Padding = new Padding(20);
 			groupBox4.Size = new Size(308, 319);
-			groupBox4.TabIndex = 16;
+			groupBox4.TabIndex = 2;
 			groupBox4.TabStop = false;
 			// 
 			// richTextBox7
@@ -481,7 +481,7 @@
 			groupBox5.Name = "groupBox5";
 			groupBox5.Padding = new Padding(20);
 			groupBox5.Size = new Size(308, 319);
-			groupBox5.TabIndex = 13;
+			groupBox5.TabIndex = 3;
 			groupBox5.TabStop = false;
 			// 
 			// richTextBox46
@@ -580,7 +580,7 @@
 			groupBox6.Name = "groupBox6";
 			groupBox6.Padding = new Padding(20);
 			groupBox6.Size = new Size(308, 319);
-			groupBox6.TabIndex = 13;
+			groupBox6.TabIndex = 4;
 			groupBox6.TabStop = false;
 			// 
 			// richTextBox31
@@ -679,8 +679,9 @@
 			groupBox7.Name = "groupBox7";
 			groupBox7.Padding = new Padding(20);
 			groupBox7.Size = new Size(308, 319);
-			groupBox7.TabIndex = 15;
+			groupBox7.TabIndex = 5;
 			groupBox7.TabStop = false;
+			groupBox7.Enter += groupBox7_Enter;
 			// 
 			// richTextBox34
 			// 
@@ -778,7 +779,7 @@
 			groupBox8.Name = "groupBox8";
 			groupBox8.Padding = new Padding(20);
 			groupBox8.Size = new Size(308, 319);
-			groupBox8.TabIndex = 13;
+			groupBox8.TabIndex = 6;
 			groupBox8.TabStop = false;
 			// 
 			// richTextBox55
@@ -877,7 +878,7 @@
 			groupBox9.Name = "groupBox9";
 			groupBox9.Padding = new Padding(20);
 			groupBox9.Size = new Size(308, 319);
-			groupBox9.TabIndex = 13;
+			groupBox9.TabIndex = 7;
 			groupBox9.TabStop = false;
 			// 
 			// richTextBox58
@@ -976,7 +977,7 @@
 			groupBox10.Name = "groupBox10";
 			groupBox10.Padding = new Padding(20);
 			groupBox10.Size = new Size(308, 319);
-			groupBox10.TabIndex = 14;
+			groupBox10.TabIndex = 8;
 			groupBox10.TabStop = false;
 			// 
 			// richTextBox61
@@ -1066,7 +1067,7 @@
 			button_solve.Location = new System.Drawing.Point(1016, 898);
 			button_solve.Name = "button_solve";
 			button_solve.Size = new Size(287, 90);
-			button_solve.TabIndex = 82;
+			button_solve.TabIndex = 93;
 			button_solve.Text = "Solve";
 			button_solve.UseVisualStyleBackColor = true;
 			// 
@@ -1076,7 +1077,7 @@
 			button_reset.Location = new System.Drawing.Point(1014, 802);
 			button_reset.Name = "button_reset";
 			button_reset.Size = new Size(287, 76);
-			button_reset.TabIndex = 83;
+			button_reset.TabIndex = 92;
 			button_reset.Text = "Reset";
 			button_reset.UseVisualStyleBackColor = true;
 			// 
@@ -1108,7 +1109,7 @@
 			groupBox11.Location = new System.Drawing.Point(1016, 25);
 			groupBox11.Name = "groupBox11";
 			groupBox11.Size = new Size(285, 230);
-			groupBox11.TabIndex = 5;
+			groupBox11.TabIndex = 9;
 			groupBox11.TabStop = false;
 			groupBox11.Text = "Options";
 			// 
@@ -1173,7 +1174,7 @@
 			comboBox_generateSudoku.Location = new System.Drawing.Point(6, 33);
 			comboBox_generateSudoku.Name = "comboBox_generateSudoku";
 			comboBox_generateSudoku.Size = new Size(275, 45);
-			comboBox_generateSudoku.TabIndex = 0;
+			comboBox_generateSudoku.TabIndex = 89;
 			comboBox_generateSudoku.Text = "Choose a difficulty...";
 			comboBox_generateSudoku.SelectedIndexChanged += ComboBox_generateSudoku_SelectedIndexChanged;
 			// 
@@ -1194,7 +1195,7 @@
 			button_save.Location = new System.Drawing.Point(147, 22);
 			button_save.Name = "button_save";
 			button_save.Size = new Size(134, 118);
-			button_save.TabIndex = 1;
+			button_save.TabIndex = 91;
 			button_save.Text = "Save";
 			button_save.UseVisualStyleBackColor = true;
 			// 
@@ -1204,7 +1205,7 @@
 			button_load.Location = new System.Drawing.Point(6, 22);
 			button_load.Name = "button_load";
 			button_load.Size = new Size(135, 118);
-			button_load.TabIndex = 0;
+			button_load.TabIndex = 90;
 			button_load.Text = "Load";
 			button_load.UseVisualStyleBackColor = true;
 			// 
