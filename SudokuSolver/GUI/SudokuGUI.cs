@@ -208,7 +208,7 @@ public partial class SudokuGUI : Form
 
 	private void SudokuUnsolvable()
 	{
-		BeginInvoke(() =>
+		Invoke(() =>
 		{
 			EnableButtons();
 			MessageBox.Show("The specified sudoku is unsolvable.", "Sudoku unsolvable", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -217,10 +217,7 @@ public partial class SudokuGUI : Form
 
 	private void SudokuSolved(int[,] sudokuGrid)
 	{
-		Invoke(() =>
-		{
-			EnableButtons();
-		});
+		Invoke(EnableButtons);
 		UpdateSudokuGridGUI(sudokuGrid);
 	}
 
