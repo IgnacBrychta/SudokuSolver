@@ -1097,7 +1097,7 @@
 			label_solveTimeIndicator.Name = "label_solveTimeIndicator";
 			label_solveTimeIndicator.Size = new Size(275, 105);
 			label_solveTimeIndicator.TabIndex = 84;
-			label_solveTimeIndicator.Text = "ms";
+			label_solveTimeIndicator.Text = "--- ms";
 			label_solveTimeIndicator.TextAlign = ContentAlignment.MiddleCenter;
 			// 
 			// groupBox11
@@ -1115,12 +1115,12 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Font = new Font("Segoe UI", 25F, FontStyle.Regular, GraphicsUnit.Point);
-			label1.Location = new System.Drawing.Point(55, 89);
+			label1.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+			label1.Location = new System.Drawing.Point(24, 98);
 			label1.Name = "label1";
-			label1.Size = new Size(182, 46);
+			label1.Size = new Size(241, 37);
 			label1.TabIndex = 87;
-			label1.Text = "Delay [ms]:";
+			label1.Text = "Update every ... ms";
 			// 
 			// richTextBox_setSolvingDelay
 			// 
@@ -1138,9 +1138,9 @@
 			checkBox1.Font = new Font("Segoe UI", 25F, FontStyle.Regular, GraphicsUnit.Point);
 			checkBox1.Location = new System.Drawing.Point(24, 22);
 			checkBox1.Name = "checkBox1";
-			checkBox1.Size = new Size(213, 50);
+			checkBox1.Size = new Size(260, 50);
 			checkBox1.TabIndex = 86;
-			checkBox1.Text = "Apply delay";
+			checkBox1.Text = "Show progress";
 			checkBox1.UseVisualStyleBackColor = true;
 			checkBox1.CheckedChanged += CheckBox1_CheckedChanged;
 			// 

@@ -42,6 +42,7 @@ public class SudokuSolver : Sudoku
 		}
 	}
 	public long TimeSpentSolving { get => stopwatch.ElapsedMilliseconds; }
+
 	public SudokuSolver(int[,] filledSudokuGrid, int updateDelay)
 	{
 		sudokuGrid = CreateCellGrid(filledSudokuGrid);
@@ -77,23 +78,29 @@ public class SudokuSolver : Sudoku
 	public async Task SolveAsync()
 	{
 		if (sudokuGrid is null) return;
+		bool sudokuSolved = false;
 		stopwatch.Restart();
 		await Task.Run(() =>
 		{
 			if (_iterationDelay != default)
 			{
-				Task continuous = RaiseIterationEventContinously();
-				bool solved = IterateWithDelay();
-				if(!solved) OnSudokuUnsolvable();
+				_ = RaiseIterationEventContinously();
+				sudokuSolved = SolveSudokuWithProgress();
 			}
 			else
 			{
-				bool solved = Iterate();
-				if(!solved) OnSudokuUnsolvable();
+				sudokuSolved = SolveSudoku();
 			}
 		});
 		stopwatch.Stop();
-		OnSudokuSolved();
+		if (sudokuSolved) 
+		{
+			OnSudokuSolved();
+		} 
+		else 
+		{
+			OnSudokuUnsolvable();
+		}
 	}
 
 	private async Task RaiseIterationEventContinously()
@@ -127,7 +134,7 @@ public class SudokuSolver : Sudoku
 		return true;
 	}
 
-	private bool IterateWithDelay()
+	private bool SolveSudokuWithProgress()
 	{
 		Thread.Sleep(_iterationDelay);
 		Cell? nextEmptyCell = FindEmptyCell();
@@ -139,7 +146,7 @@ public class SudokuSolver : Sudoku
 			{
 				sudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
 
-				if (IterateWithDelay()) return true;
+				if (SolveSudokuWithProgress()) return true;
 
 				sudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
 			}
@@ -147,7 +154,7 @@ public class SudokuSolver : Sudoku
 		return false;
 	}
 
-	private bool Iterate()
+	private bool SolveSudoku()
 	{
 		Cell? nextEmptyCell = FindEmptyCell();
 		if (nextEmptyCell is null) return true;
@@ -158,7 +165,7 @@ public class SudokuSolver : Sudoku
 			{
 				sudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
 
-				if (Iterate()) return true;
+				if (SolveSudoku()) return true;
 
 				sudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
 			}
@@ -185,6 +192,7 @@ public class SudokuSolver : Sudoku
 	public event SudokuSolvedHandler? SudokuSolved;
 	public delegate void SudokuUnsolvableHandler();
 	public event SudokuUnsolvableHandler? SudokuUnsolvable;
+
 	protected virtual void OnNewIterationCompleted()
 	{
 		NewIterationCompleted?.Invoke(CellArrayToIntArray(sudokuGrid));

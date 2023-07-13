@@ -46,6 +46,7 @@ public partial class SudokuGUI : Form
 		UpdateSudokuGridGUI(sudokuGrid);
 		suspendInputChecking = false;
 		comboBox_generateSudoku.Enabled = true;
+		ResetTimeIndicator();
 	}
 
 	private void UpdateSudokuGridGUI(int[,] sudokuGrid)
@@ -100,12 +101,22 @@ public partial class SudokuGUI : Form
 	private void Button_load_Click(object? sender, EventArgs e)
 	{
 		int[,]? sudokuDigits = SudokuGridLoader.LoadSudoku();
-		if (sudokuDigits is not null) UpdateSudokuGridGUI(sudokuDigits);
+		if (sudokuDigits is not null)
+		{
+			UpdateSudokuGridGUI(sudokuDigits);
+			ResetTimeIndicator();
+		}
 	}
 
 	private void Button_reset_Click(object? sender, EventArgs e)
 	{
 		ResetSudokuGridBackground();
+		ResetTimeIndicator();
+	}
+
+	private void ResetTimeIndicator()
+	{
+		label_solveTimeIndicator.Text = "--- ms";
 	}
 
 	private void ResetSudokuGridBackground()
