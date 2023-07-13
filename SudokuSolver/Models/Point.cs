@@ -1,5 +1,8 @@
 ﻿namespace SudokuSolver;
 
+/// <summary>
+/// Represents a point in 2D space
+/// </summary>
 public struct Point
 {
 	internal int x;

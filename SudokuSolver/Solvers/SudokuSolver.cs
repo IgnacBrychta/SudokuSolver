@@ -2,6 +2,9 @@
 
 namespace SudokuSolver;
 
+/// <summary>
+/// Class for finding a solution to a sudoku
+/// </summary>
 public class SudokuSolver : Sudoku
 {
 	public int[,] SudokuGrid
@@ -18,9 +21,13 @@ public class SudokuSolver : Sudoku
 			{
 				OnSudokuUnsolvable();
 				sudokuGrid = null;
+				return;
 			}
+			lastSudokuGridIntArray = value;
 		}
 	}
+
+	int[,]? lastSudokuGridIntArray;
 	Cell[,]? sudokuGrid;
 	readonly Stopwatch stopwatch = new Stopwatch();
 	int _updateDelay = default;
@@ -61,20 +68,14 @@ public class SudokuSolver : Sudoku
 
 	public SudokuSolver() { }
 
-	private static Cell[,] CreateCellGrid(int[,] grid)
-	{
-		Cell[,] cellGrid = new Cell[sideLength, sideLength];
-		for (int i = 0; i < sideLength; i++)
-		{
-			for (int j = 0; j < sideLength; j++)
-			{
-				int cellValue = grid[i, j];
-				cellGrid[i, j] = new Cell(cellValue, new Point(i, j));
-			}
-		}
-		return cellGrid;
-	}
 
+	/// <summary>
+	/// Starts solving <see cref="SudokuGrid"/> asynchronously
+	/// Raises an event <see cref="OnSudokuSolved"/> if the sudoku has been solved
+	/// Raises an event <see cref="OnSudokuUnsolvable"</see> if the sudoku is unsolvable
+	/// Raises an event <see cref="RaiseIterationEventContinously"/> every <see cref="IterationDelay"/> milliseconds if <see cref="IterationDelay"/> is not equal to 0
+	/// </summary>
+	/// <returns></returns>
 	public async Task SolveAsync()
 	{
 		if (sudokuGrid is null) return;
@@ -84,7 +85,7 @@ public class SudokuSolver : Sudoku
 		{
 			if (_iterationDelay != default)
 			{
-				_ = RaiseIterationEventContinously();
+				_ = RaiseIterationEventContinouslyAsync();
 				sudokuSolved = SolveSudokuWithProgress();
 			}
 			else
@@ -93,17 +94,21 @@ public class SudokuSolver : Sudoku
 			}
 		});
 		stopwatch.Stop();
-		if (sudokuSolved) 
+		if (sudokuSolved)
 		{
 			OnSudokuSolved();
-		} 
-		else 
+		}
+		else
 		{
 			OnSudokuUnsolvable();
 		}
 	}
 
-	private async Task RaiseIterationEventContinously()
+	/// <summary>
+	/// Raises the <see cref="OnNewIterationCompleted"/> event every <see cref="UpdateDelay"/> milliseconds
+	/// </summary>
+	/// <returns></returns>
+	private async Task RaiseIterationEventContinouslyAsync()
 	{
 		await Task.Run(async () =>
 		{
@@ -115,6 +120,11 @@ public class SudokuSolver : Sudoku
 		});
 	}
 
+
+	/// <summary>
+	/// Checks the <see cref="sudokuGrid"/> whether it violates the rules of sudoku or not
+	/// </summary>
+	/// <returns></returns>
 	public bool CheckIfSudokuValid()
 	{
 		for (int i = 0; i < sideLength; i++)
@@ -134,6 +144,11 @@ public class SudokuSolver : Sudoku
 		return true;
 	}
 
+	/// <summary>
+	/// Recursively solves the <see cref="SudokuGrid"/>
+	/// Sleeps for <see cref="IterationDelay"/> milliseconds after each recursive call
+	/// </summary>
+	/// <returns>A <see cref="Boolean"/> whether the sudoku can be solved</returns>
 	private bool SolveSudokuWithProgress()
 	{
 		Thread.Sleep(_iterationDelay);
@@ -154,6 +169,10 @@ public class SudokuSolver : Sudoku
 		return false;
 	}
 
+	/// <summary>
+	/// Recursively solves the <see cref="SudokuGrid"/>
+	/// </summary>
+	/// <returns>A <see cref="Boolean"/> whether the sudoku can be solved</returns>
 	private bool SolveSudoku()
 	{
 		Cell? nextEmptyCell = FindEmptyCell();
@@ -173,7 +192,148 @@ public class SudokuSolver : Sudoku
 		return false;
 	}
 
+	/// <summary>
+	/// Counts all possible solutions of <see cref="SudokuGrid"/>
+	/// </summary>
+	/// <returns>A <see cref="Boolean"/> whether the sudoku can be solved</returns>
+	private int FindAllPossibleSolutionsToSudoku()
+	{
+		// local grid not to disturb the stored one
+		Cell[,]? localSudokuGrid = CreateCellGrid(lastSudokuGridIntArray!);
+		int solutions = 0;
+		int[] algorithmPosition = new[] { sideLength - 1, sideLength - 1 };
+		bool CountSolutionsRecursively()
+		{
+			Cell? nextEmptyCell = FindEmptyCell();
+			if (nextEmptyCell is null)
+			{
+				solutions++;
+				if (NextFilledInCellPosition(ref algorithmPosition))
+				{
+					nextEmptyCell = localSudokuGrid![algorithmPosition[0], algorithmPosition[1]];
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+			for (int digit = smallestDigit; digit <= largestDigit; digit++)
+			{
+				if (IsStepValid(nextEmptyCell, digit, ref localSudokuGrid))
+				{
+					localSudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
+
+					if (CountSolutionsRecursively()) return true;
+
+					localSudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
+				}
+			}
+			return false;
+		}
+		_ = CountSolutionsRecursively();
+		return solutions;
+	}
+
+	/// <summary>
+	/// When <see cref="DoesSudokuHaveMoreThanOneSolution"/> or <see cref="FindAllPossibleSolutionsToSudoku"/>
+	/// find a valid solution, this method provides them with a new position to try and find a new possible
+	/// solution
+	/// </summary>
+	/// <returns></returns>
+	private static bool NextFilledInCellPosition(ref int[] algorithmPosition)
+	{
+		algorithmPosition[1]--;
+		if (algorithmPosition[1] < 0)
+		{
+			algorithmPosition[1] = sideLength - 1;
+			algorithmPosition[0]--;
+
+			if (algorithmPosition[0] < 0)
+			{
+				algorithmPosition[0] = sideLength - 1;
+				algorithmPosition[1] = sideLength - 1;
+				return false;
+			}
+			return true;
+		}
+		return true;
+	}
+
+	/// <summary>
+	/// Checks if sudoku has more than one solution
+	/// </summary>
+	/// <returns><see cref="SudokuSolutionCount"/> whether the sudoku has zero, one or multiple solutions</returns>
+	internal static SudokuSolutionCount DoesSudokuHaveMoreThanOneSolution(int[,] lastSudokuGridIntArray)
+	{
+		// local grid not to disturb the stored one
+		Cell[,]? localSudokuGrid = CreateCellGrid(lastSudokuGridIntArray!);
+		
+		int solutionCount = 0;
+		int[] algorithmPosition = new[] { sideLength - 1, sideLength - 1 };
+		bool FindSolutionsRecursively()
+		{
+			Cell? nextEmptyCell = FindEmptyCell(localSudokuGrid);
+			if (nextEmptyCell is null)
+			{
+				solutionCount++;
+				if (solutionCount > 1) return true;
+				if (NextFilledInCellPosition(ref algorithmPosition))
+				{
+					nextEmptyCell = localSudokuGrid![algorithmPosition[0], algorithmPosition[1]];
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+			for (int digit = smallestDigit; digit <= largestDigit; digit++)
+			{
+				if (IsStepValid(nextEmptyCell, digit, ref localSudokuGrid))
+				{
+					localSudokuGrid![nextEmptyCell.location.x, nextEmptyCell.location.y].value = digit;
+
+					if (FindSolutionsRecursively()) return true;
+
+					localSudokuGrid[nextEmptyCell.location.x, nextEmptyCell.location.y].value = emptyCellValue;
+				}
+			}
+			return false;
+		}
+		_ = FindSolutionsRecursively();
+		return solutionCount switch
+		{
+			0 => SudokuSolutionCount.ZeroSolutions,
+			1 => SudokuSolutionCount.OneSolution,
+			_ => SudokuSolutionCount.Multiple
+		};
+	}
+
+	/// <summary>
+	/// Finds the first empty <see cref="Cell"/> (no digit) of each column of each row
+	/// </summary>
+	/// <returns>The first <see cref="Cell"/> with no digit,
+	/// <see cref="null"/> if all cells are filled in</returns>
 	private Cell? FindEmptyCell()
+	{
+		for (int i = 0; i < sideLength; i++)
+		{
+			for (int j = 0; j < sideLength; j++)
+			{
+				Cell cell = sudokuGrid![i, j];
+				if (cell.value == emptyCellValue) return cell;
+			}
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// Finds the first empty <see cref="Cell"/> (no digit) of each column of each row
+	/// </summary>
+	/// <returns>The first <see cref="Cell"/> with no digit,
+	/// <see cref="null"/> if all cells are filled in</returns>
+	private static Cell? FindEmptyCell(in Cell[,] sudokuGrid)
 	{
 		for (int i = 0; i < sideLength; i++)
 		{
@@ -193,16 +353,25 @@ public class SudokuSolver : Sudoku
 	public delegate void SudokuUnsolvableHandler();
 	public event SudokuUnsolvableHandler? SudokuUnsolvable;
 
+	/// <summary>
+	/// Raised every <see cref="IterationDelay"/> milliseconds when solving and with progress indication turned on
+	/// </summary>
 	protected virtual void OnNewIterationCompleted()
 	{
 		NewIterationCompleted?.Invoke(CellArrayToIntArray(sudokuGrid));
 	}
 
+	/// <summary>
+	/// Raised when sudoku is solved
+	/// </summary>
 	protected virtual void OnSudokuSolved()
 	{
 		SudokuSolved?.Invoke(CellArrayToIntArray(sudokuGrid));
 	}
 
+	/// <summary>
+	/// Raised when sudoku is not solvable
+	/// </summary>
 	protected virtual void OnSudokuUnsolvable()
 	{
 		SudokuUnsolvable?.Invoke();

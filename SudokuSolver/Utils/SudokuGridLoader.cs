@@ -2,6 +2,9 @@
 
 namespace SudokuSolver;
 
+/// <summary>
+/// Provides a way to load a sudoku
+/// </summary>
 internal static class SudokuGridLoader
 {
 	const char blank = '.';
@@ -9,6 +12,11 @@ internal static class SudokuGridLoader
 	const char verticalLine = '|';
 	const char horizontalLine = '-';
 	const int noDigit = -1;
+
+	/// <summary>
+	/// Asks the user to select a file to load a sudoku from
+	/// </summary>
+	/// <returns></returns>
 	internal static int[,]? LoadSudoku()
 	{
 		OpenFileDialog ofd = new OpenFileDialog()
@@ -31,6 +39,9 @@ internal static class SudokuGridLoader
 		return null;
 	}
 
+	/// <summary>
+	/// Shows the user a popup error (<see cref="MessageBox"/>) 
+	/// </summary>
 	private static void ShowError()
 	{
 		MessageBox.Show(
@@ -41,6 +52,11 @@ internal static class SudokuGridLoader
 				);
 	}
 
+	/// <summary>
+	/// Opens the file specified, reads its data, parses it and returns a new two-dimensional array of sudoku digits if the data in the file is in the right format
+	/// </summary>
+	/// <param name="filename"></param>
+	/// <returns></returns>
 	private static int[,]? LoadSudokuFromFile(string filename)
 	{
 		using FileStream fs = new FileStream(filename, FileMode.Open);
@@ -79,6 +95,12 @@ internal static class SudokuGridLoader
 		return sudokuDigits;
 	}
 
+	/// <summary>
+	/// Tries to convert <paramref name="digit"/> into a sudoku digit
+	/// </summary>
+	/// <param name="digit"></param>
+	/// <returns></returns>
+	/// <exception cref="FormatException">Occurs when <paramref name="digit"/> is not a valid sudoku digit</exception>
 	private static int GetParsedSudokuDigit(char digit)
 	{
 		int numericValue = default;

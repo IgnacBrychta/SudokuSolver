@@ -1,5 +1,8 @@
 ﻿namespace SudokuSolver;
 
+/// <summary>
+/// A sudoku grid cell that stores its digit (<see cref="value"/>) and location (<see cref="location"/>)
+/// </summary>
 public class Cell
 {
 	internal int value;
@@ -10,6 +13,10 @@ public class Cell
 		this.location = location;
 	}
 
+	/// <summary>
+	/// Retrieves data about this <see cref="Cell"/> instance useful for debugging
+	/// </summary>
+	/// <returns></returns>
 	public override string ToString()
 	{
 		return $"val:{value};{location}";
