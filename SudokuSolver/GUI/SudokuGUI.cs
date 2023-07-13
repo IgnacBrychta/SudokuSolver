@@ -14,9 +14,36 @@ public partial class SudokuGUI : Form
 	readonly Color textBoxColorNotOK = Color.Red;
 	bool suspendInputChecking = false;
 	bool iterationDelayValid = true;
+	private void SudokuGUI_Load(object? sender, EventArgs e)
+	{
+		if (Screen.PrimaryScreen is null) { return; }
+		AutoScaleMode = AutoScaleMode.None;
+
+		float devMonitorWidth = 1920;
+		float devMonitorHeight = 1080;
+
+		float scaleX = devMonitorWidth / Screen.PrimaryScreen.Bounds.Width;
+		float scaleY = devMonitorHeight / Screen.PrimaryScreen.Bounds.Height;
+		float scalingFactor = Math.Min(scaleX, scaleY);
+
+		Scale(new SizeF(scalingFactor, scalingFactor));
+
+		// Adjust font sizes of controls
+		UpdateControlFontSizes(this, scalingFactor);
+	}
+	private void UpdateControlFontSizes(Control control, float scalingFactor)
+	{
+		control.Font = new Font(control.Font.FontFamily, control.Font.Size * scalingFactor, control.Font.Style);
+
+		foreach (Control childControl in control.Controls)
+		{
+			UpdateControlFontSizes(childControl, scalingFactor);
+		}
+	}
 	public SudokuGUI()
 	{
 		InitializeComponent();
+		Load += SudokuGUI_Load;
 		ConfigSudokuGrid();
 		sudokuGridGUI = new RichTextBox[sideLength, sideLength]
 		{
