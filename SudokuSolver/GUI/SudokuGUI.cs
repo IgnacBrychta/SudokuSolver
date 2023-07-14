@@ -413,6 +413,7 @@ public partial class SudokuGUI : Form
 		int[,]? sudokuDigits = SudokuGridLoader.LoadSudoku();
 		if (sudokuDigits is not null)
 		{
+			ResetSudokuGridBackground();
 			UpdateSudokuGridGUI(sudokuDigits);
 			ResetTimeIndicator();
 		}
