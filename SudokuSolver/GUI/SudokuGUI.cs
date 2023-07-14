@@ -491,7 +491,7 @@ public partial class SudokuGUI : Form
 		}
 		cell.SelectionStart = 1; // put cursor right of number
 
-		if(lockForUserSolving && Sudoku.CheckIfSudokuSolved(GetSudokuDigits()))
+		if (lockForUserSolving && Sudoku.CheckIfSudokuSolved(GetSudokuDigits()))
 		{
 			CelebrateSuccessfulSolve();
 		}
