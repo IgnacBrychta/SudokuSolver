@@ -251,4 +251,5 @@ public sealed class SudokuGenerator : Sudoku
 	{
 		GenerationComplete?.Invoke(CellArrayToIntArray(sudokuGrid));
 	}
+
 }

@@ -111,4 +111,5 @@ internal static class SudokuGridLoader
 		}
 		return numericValue;
 	}
+
 }

@@ -82,4 +82,5 @@ internal static class SudokuGridSaver
 	{
 		return digit != -1 ? (char)(digit + asciiOffset) : blank;
 	}
+
 }

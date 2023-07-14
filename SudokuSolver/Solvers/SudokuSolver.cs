@@ -304,8 +304,8 @@ public class SudokuSolver : Sudoku
 		_ = FindSolutionsRecursively();
 		return solutionCount switch
 		{
-			0 => SudokuSolutionCount.ZeroSolutions,
-			1 => SudokuSolutionCount.OneSolution,
+			0 => SudokuSolutionCount.Zero,
+			1 => SudokuSolutionCount.One,
 			_ => SudokuSolutionCount.Multiple
 		};
 	}
@@ -376,4 +376,5 @@ public class SudokuSolver : Sudoku
 	{
 		SudokuUnsolvable?.Invoke();
 	}
+
 }

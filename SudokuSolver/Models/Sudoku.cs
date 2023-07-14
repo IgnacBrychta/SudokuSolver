@@ -5,7 +5,7 @@ public abstract class Sudoku
 	private protected const int sideLength = 9;
 	private protected const int smallestDigit = 1;
 	private protected const int largestDigit = 9;
-	private protected const int emptyCellValue = -1;
+	public const int emptyCellValue = -1;
 
 	/// <summary>
 	/// Determines whether <paramref name="digit"/> in the position of <paramref name="cell"/> doesn't violate the rules of sudoku in <paramref name="sudokuGrid"/> 
@@ -129,33 +129,6 @@ public abstract class Sudoku
 		return groupedNumbers;
 	}
 
-	private protected enum SudokuSquare
-	{
-		N = 1,
-		NE = 2,
-		E = 4,
-		SE = 8,
-		S = 16,
-		SW = 32,
-		W = 64,
-		NW = 128,
-		CENTER = 256,
-		NONE = 512
-	}
-
-	private protected static readonly Dictionary<SudokuSquare, Point> map = new Dictionary<SudokuSquare, Point>()
-	{
-		{ SudokuSquare.N,      new Point( 0, -1) },
-		{ SudokuSquare.NE,     new Point( 1, -1) },
-		{ SudokuSquare.E,      new Point( 1,  0) },
-		{ SudokuSquare.SE,     new Point( 1,  1) },
-		{ SudokuSquare.S,      new Point( 0,  1) },
-		{ SudokuSquare.SW,     new Point(-1,  1) },
-		{ SudokuSquare.W,      new Point(-1,  0) },
-		{ SudokuSquare.NW,     new Point(-1, -1) },
-		{ SudokuSquare.CENTER, new Point( 0,  0) }
-	};
-
 	/// <summary>
 	/// Creates a new <see cref="Dictionary{int, int}"/> to store the count of digits present in a row, column or square
 	/// </summary>
@@ -264,4 +237,32 @@ public abstract class Sudoku
 		}
 		return array;
 	}
+
+	private protected enum SudokuSquare
+	{
+		N = 1,
+		NE = 2,
+		E = 4,
+		SE = 8,
+		S = 16,
+		SW = 32,
+		W = 64,
+		NW = 128,
+		CENTER = 256,
+		NONE = 512
+	}
+
+	private protected static readonly Dictionary<SudokuSquare, Point> map = new Dictionary<SudokuSquare, Point>()
+	{
+		{ SudokuSquare.N,      new Point( 0, -1) },
+		{ SudokuSquare.NE,     new Point( 1, -1) },
+		{ SudokuSquare.E,      new Point( 1,  0) },
+		{ SudokuSquare.SE,     new Point( 1,  1) },
+		{ SudokuSquare.S,      new Point( 0,  1) },
+		{ SudokuSquare.SW,     new Point(-1,  1) },
+		{ SudokuSquare.W,      new Point(-1,  0) },
+		{ SudokuSquare.NW,     new Point(-1, -1) },
+		{ SudokuSquare.CENTER, new Point( 0,  0) }
+	};
+
 }

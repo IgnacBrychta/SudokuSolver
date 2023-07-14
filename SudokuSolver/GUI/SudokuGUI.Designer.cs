@@ -127,7 +127,7 @@
 			groupBox11 = new GroupBox();
 			label1 = new Label();
 			richTextBox_setSolvingDelay = new RichTextBox();
-			checkBox1 = new CheckBox();
+			checkBox_showProgress = new CheckBox();
 			groupBox12 = new GroupBox();
 			groupBox13 = new GroupBox();
 			comboBox_generateSudoku = new ComboBox();
@@ -138,6 +138,10 @@
 			button_checkSolved = new Button();
 			button_repeatingDigits = new Button();
 			groupBox16 = new GroupBox();
+			groupBox17 = new GroupBox();
+			label2 = new Label();
+			checkBox_lockForSolving = new CheckBox();
+			linkLabel_help = new LinkLabel();
 			groupBox1.SuspendLayout();
 			groupBox2.SuspendLayout();
 			groupBox3.SuspendLayout();
@@ -154,6 +158,7 @@
 			groupBox14.SuspendLayout();
 			groupBox15.SuspendLayout();
 			groupBox16.SuspendLayout();
+			groupBox17.SuspendLayout();
 			SuspendLayout();
 			// 
 			// groupBox1
@@ -1089,9 +1094,9 @@
 			// label_solveTime
 			// 
 			label_solveTime.Font = new Font("Segoe UI", 30F, FontStyle.Regular, GraphicsUnit.Point);
-			label_solveTime.Location = new System.Drawing.Point(6, 20);
+			label_solveTime.Location = new System.Drawing.Point(7, 12);
 			label_solveTime.Name = "label_solveTime";
-			label_solveTime.Size = new Size(275, 100);
+			label_solveTime.Size = new Size(275, 65);
 			label_solveTime.TabIndex = 85;
 			label_solveTime.Text = "Time:";
 			label_solveTime.TextAlign = ContentAlignment.MiddleCenter;
@@ -1099,21 +1104,21 @@
 			// label_solveTimeIndicator
 			// 
 			label_solveTimeIndicator.Font = new Font("Segoe UI", 30F, FontStyle.Regular, GraphicsUnit.Point);
-			label_solveTimeIndicator.Location = new System.Drawing.Point(2, 120);
+			label_solveTimeIndicator.Location = new System.Drawing.Point(7, 77);
 			label_solveTimeIndicator.Name = "label_solveTimeIndicator";
-			label_solveTimeIndicator.Size = new Size(275, 79);
+			label_solveTimeIndicator.Size = new Size(275, 61);
 			label_solveTimeIndicator.TabIndex = 84;
 			label_solveTimeIndicator.Text = "--- ms";
 			label_solveTimeIndicator.TextAlign = ContentAlignment.MiddleCenter;
 			// 
 			// groupBox11
 			// 
-			groupBox11.Controls.Add(label1);
-			groupBox11.Controls.Add(richTextBox_setSolvingDelay);
-			groupBox11.Controls.Add(checkBox1);
+			groupBox11.Controls.Add(linkLabel_help);
+			groupBox11.Controls.Add(checkBox_lockForSolving);
+			groupBox11.Controls.Add(groupBox17);
 			groupBox11.Location = new System.Drawing.Point(1016, 25);
 			groupBox11.Name = "groupBox11";
-			groupBox11.Size = new Size(285, 230);
+			groupBox11.Size = new Size(285, 298);
 			groupBox11.TabIndex = 9;
 			groupBox11.TabStop = false;
 			groupBox11.Text = "Options";
@@ -1122,41 +1127,41 @@
 			// 
 			label1.AutoSize = true;
 			label1.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-			label1.Location = new System.Drawing.Point(24, 98);
+			label1.Location = new System.Drawing.Point(47, 62);
 			label1.Name = "label1";
-			label1.Size = new Size(241, 37);
+			label1.Size = new Size(175, 37);
 			label1.TabIndex = 87;
-			label1.Text = "Update every ... ms";
+			label1.Text = "Update every";
 			// 
 			// richTextBox_setSolvingDelay
 			// 
 			richTextBox_setSolvingDelay.Font = new Font("Segoe UI", 25F, FontStyle.Regular, GraphicsUnit.Point);
-			richTextBox_setSolvingDelay.Location = new System.Drawing.Point(44, 138);
+			richTextBox_setSolvingDelay.Location = new System.Drawing.Point(62, 102);
 			richTextBox_setSolvingDelay.Name = "richTextBox_setSolvingDelay";
-			richTextBox_setSolvingDelay.Size = new Size(202, 77);
+			richTextBox_setSolvingDelay.Size = new Size(96, 64);
 			richTextBox_setSolvingDelay.TabIndex = 88;
 			richTextBox_setSolvingDelay.Text = "";
 			richTextBox_setSolvingDelay.TextChanged += RichTextBox_setSolvingDelay_TextChanged;
 			// 
-			// checkBox1
+			// checkBox_showProgress
 			// 
-			checkBox1.AutoSize = true;
-			checkBox1.Font = new Font("Segoe UI", 23F, FontStyle.Regular, GraphicsUnit.Point);
-			checkBox1.Location = new System.Drawing.Point(24, 22);
-			checkBox1.Name = "checkBox1";
-			checkBox1.Size = new Size(237, 46);
-			checkBox1.TabIndex = 86;
-			checkBox1.Text = "Show progress";
-			checkBox1.UseVisualStyleBackColor = true;
-			checkBox1.CheckedChanged += CheckBox1_CheckedChanged;
+			checkBox_showProgress.AutoSize = true;
+			checkBox_showProgress.Font = new Font("Segoe UI", 23F, FontStyle.Regular, GraphicsUnit.Point);
+			checkBox_showProgress.Location = new System.Drawing.Point(18, 16);
+			checkBox_showProgress.Name = "checkBox_showProgress";
+			checkBox_showProgress.Size = new Size(237, 46);
+			checkBox_showProgress.TabIndex = 86;
+			checkBox_showProgress.Text = "Show progress";
+			checkBox_showProgress.UseVisualStyleBackColor = true;
+			checkBox_showProgress.CheckedChanged += CheckBox_showProgress_CheckedChanged;
 			// 
 			// groupBox12
 			// 
 			groupBox12.Controls.Add(label_solveTime);
 			groupBox12.Controls.Add(label_solveTimeIndicator);
-			groupBox12.Location = new System.Drawing.Point(1014, 261);
+			groupBox12.Location = new System.Drawing.Point(1014, 329);
 			groupBox12.Name = "groupBox12";
-			groupBox12.Size = new Size(287, 210);
+			groupBox12.Size = new Size(287, 144);
 			groupBox12.TabIndex = 6;
 			groupBox12.TabStop = false;
 			groupBox12.Text = "Time";
@@ -1255,6 +1260,51 @@
 			groupBox16.TabStop = false;
 			groupBox16.Text = "Checks";
 			// 
+			// groupBox17
+			// 
+			groupBox17.Controls.Add(label2);
+			groupBox17.Controls.Add(checkBox_showProgress);
+			groupBox17.Controls.Add(richTextBox_setSolvingDelay);
+			groupBox17.Controls.Add(label1);
+			groupBox17.Location = new System.Drawing.Point(6, 22);
+			groupBox17.Name = "groupBox17";
+			groupBox17.Size = new Size(273, 174);
+			groupBox17.TabIndex = 89;
+			groupBox17.TabStop = false;
+			groupBox17.Text = "Progress";
+			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+			label2.Location = new System.Drawing.Point(164, 129);
+			label2.Name = "label2";
+			label2.Size = new Size(51, 37);
+			label2.TabIndex = 89;
+			label2.Text = "ms";
+			// 
+			// checkBox_lockForSolving
+			// 
+			checkBox_lockForSolving.AutoSize = true;
+			checkBox_lockForSolving.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+			checkBox_lockForSolving.Location = new System.Drawing.Point(24, 202);
+			checkBox_lockForSolving.Name = "checkBox_lockForSolving";
+			checkBox_lockForSolving.Size = new Size(222, 41);
+			checkBox_lockForSolving.TabIndex = 90;
+			checkBox_lockForSolving.Text = "Lock for solving";
+			checkBox_lockForSolving.UseVisualStyleBackColor = true;
+			// 
+			// linkLabel_help
+			// 
+			linkLabel_help.AutoSize = true;
+			linkLabel_help.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+			linkLabel_help.Location = new System.Drawing.Point(91, 246);
+			linkLabel_help.Name = "linkLabel_help";
+			linkLabel_help.Size = new Size(73, 37);
+			linkLabel_help.TabIndex = 91;
+			linkLabel_help.TabStop = true;
+			linkLabel_help.Text = "Help";
+			// 
 			// SudokuGUI
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1289,6 +1339,8 @@
 			groupBox14.ResumeLayout(false);
 			groupBox15.ResumeLayout(false);
 			groupBox16.ResumeLayout(false);
+			groupBox17.ResumeLayout(false);
+			groupBox17.PerformLayout();
 			ResumeLayout(false);
 		}
 
@@ -1402,7 +1454,7 @@
 		private GroupBox groupBox11;
 		private Label label1;
 		private RichTextBox richTextBox_setSolvingDelay;
-		private CheckBox checkBox1;
+		private CheckBox checkBox_showProgress;
 		private GroupBox groupBox12;
 		private GroupBox groupBox13;
 		private ComboBox comboBox_generateSudoku;
@@ -1413,5 +1465,9 @@
 		private Button button_checkSolved;
 		private Button button_repeatingDigits;
 		private GroupBox groupBox16;
+		private LinkLabel linkLabel_help;
+		private CheckBox checkBox_lockForSolving;
+		private GroupBox groupBox17;
+		private Label label2;
 	}
 }
