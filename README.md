@@ -41,8 +41,8 @@ Program na vyřešení sudoku
 
 ![manualni-reseni]
 ### Automatické přizpůsobení pro různé monitory
-- Měřítko programu se přizpůsobí tak, aby program byl použitelný na různých zařízeních
 ###### sice ne vždy ideálně, ale to nevadí
+- Měřítko programu se přizpůsobí tak, aby program byl použitelný na různých zařízeních
 
 [simple-sudoku]: https://www.sudocue.net/fileformats.php
 [fotka-programu]: https://media.discordapp.net/attachments/1076565079333548184/1129492858974503013/2023-07-14_21_12_34-Sudoku_Solver_Ignac_Brychta_2023.png?width=808&height=676
