@@ -87,7 +87,7 @@ public sealed class SudokuGenerator : Sudoku
 	}
 
 	/// <summary>
-	/// Converts the sudoku board into a 81-character string, useful for debugging, for example
+	/// Converts the sudoku board into aa 81-character string, useful for debugging, for example
 	/// "...79.5.....1.5.89..8.6......5.....6...2....48...7619..37.8..2........3.412......"
 	/// </summary>
 	/// <returns></returns>
