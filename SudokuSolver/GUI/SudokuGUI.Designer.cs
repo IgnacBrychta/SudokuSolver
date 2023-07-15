@@ -1149,7 +1149,7 @@
 			// 
 			label2.AutoSize = true;
 			label2.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-			label2.Location = new System.Drawing.Point(164, 129);
+			label2.Location = new System.Drawing.Point(168, 124);
 			label2.Name = "label2";
 			label2.Size = new Size(51, 37);
 			label2.TabIndex = 89;
@@ -1169,10 +1169,10 @@
 			// 
 			// richTextBox_setSolvingDelay
 			// 
-			richTextBox_setSolvingDelay.Font = new Font("Segoe UI", 25F, FontStyle.Regular, GraphicsUnit.Point);
-			richTextBox_setSolvingDelay.Location = new System.Drawing.Point(62, 102);
+			richTextBox_setSolvingDelay.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
+			richTextBox_setSolvingDelay.Location = new System.Drawing.Point(66, 121);
 			richTextBox_setSolvingDelay.Name = "richTextBox_setSolvingDelay";
-			richTextBox_setSolvingDelay.Size = new Size(96, 64);
+			richTextBox_setSolvingDelay.Size = new Size(96, 48);
 			richTextBox_setSolvingDelay.TabIndex = 88;
 			richTextBox_setSolvingDelay.Text = "";
 			richTextBox_setSolvingDelay.TextChanged += RichTextBox_setSolvingDelay_TextChanged;
@@ -1181,11 +1181,11 @@
 			// 
 			label1.AutoSize = true;
 			label1.Font = new Font("Segoe UI", 20F, FontStyle.Regular, GraphicsUnit.Point);
-			label1.Location = new System.Drawing.Point(47, 62);
+			label1.Location = new System.Drawing.Point(25, 73);
 			label1.Name = "label1";
-			label1.Size = new Size(175, 37);
+			label1.Size = new Size(230, 37);
 			label1.TabIndex = 87;
-			label1.Text = "Update every";
+			label1.Text = "Update grid every";
 			// 
 			// groupBox12
 			// 

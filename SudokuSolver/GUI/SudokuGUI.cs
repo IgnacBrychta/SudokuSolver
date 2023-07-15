@@ -235,6 +235,7 @@ public partial class SudokuGUI : Form
 		Invoke(() =>
 		{
 			UnlockUI();
+			UnlockAllSudokuDigits();
 			MessageBox.Show("The specified sudoku is unsolvable.", "Sudoku unsolvable", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		});
 	}
@@ -250,10 +251,10 @@ public partial class SudokuGUI : Form
 		Invoke(() =>
 		{
 			UnlockUI();
+			UnlockAllSudokuDigits();
 			label_solveTimeIndicator.Text = sudokuSolver!.TimeSpentSolving.ToString() + " ms";
 		});
 		UpdateSudokuGridGUI(sudokuGrid);
-
 	}
 
 	/// <summary>
@@ -456,8 +457,27 @@ public partial class SudokuGUI : Form
 		LockUI();
 		sudokuSolver!.SudokuGrid = sudokuDigits;
 		if (iterationDelay != default && applyIterationDelay) sudokuSolver.IterationDelay = iterationDelay;
-		else sudokuSolver.IterationDelay = default;
+		else
+		{
+			sudokuSolver.IterationDelay = default;
+			LockAllSudokuDigits();
+		}
 		_ = sudokuSolver.SolveAsync();
+	}
+
+	/// <summary>
+	/// Locks all GUI sudoku digits so that the user cannot change them
+	/// </summary>
+	private void LockAllSudokuDigits()
+	{
+		for (int i = 0; i < sideLength; i++)
+		{
+			for (int j = 0; j < sideLength; j++)
+			{
+				RichTextBox sudokuCell = sudokuGridGUI[i, j];
+				sudokuCell.Enabled = false;
+			}
+		}
 	}
 
 	/// <summary>
@@ -509,7 +529,7 @@ public partial class SudokuGUI : Form
 		{
 			richTextBox_setSolvingDelay.Text = richTextBox_setSolvingDelay.Text[..4];
 		}
-		if (int.TryParse(richTextBox_setSolvingDelay.Text, out iterationDelay))
+		if (int.TryParse(richTextBox_setSolvingDelay.Text, out iterationDelay) && iterationDelay > 0)
 		{
 			richTextBox_setSolvingDelay.BackColor = textBoxColorOK;
 			iterationDelayValid = true;
@@ -533,8 +553,8 @@ public partial class SudokuGUI : Form
 	}
 
 	/// <summary>
-	/// Retrieves <see cref="Difficulty"/> from the <see cref="ComboBox"/> for generating a sudoku
-	/// Tries to generate a sudoku if <see cref="Difficulty"/> is selected
+	/// Retrieves <see cref="Difficulty"/> from the <see cref="ComboBox"/> for generating a sudoku,
+	/// tries to generate a sudoku if <see cref="Difficulty"/> is selected
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
