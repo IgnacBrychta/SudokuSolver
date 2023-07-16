@@ -112,7 +112,7 @@ public abstract class Sudoku
 	private protected static Dictionary<int, int> GetDigitsInSquare(SudokuSquare square, ref Cell[,]? sudokuGrid)
 	{
 		Dictionary<int, int> groupedNumbers = CreateGroupedNumbersDictionary();
-		Point squareCoordsMultiplier = map[square];
+		Point squareCoordsMultiplier = squareMap[square];
 		int multiplierX = squareCoordsMultiplier.x;
 		int multiplierY = squareCoordsMultiplier.y;
 		int squareSideLength = 3;
@@ -252,7 +252,7 @@ public abstract class Sudoku
 		NONE = 512
 	}
 
-	private protected static readonly Dictionary<SudokuSquare, Point> map = new Dictionary<SudokuSquare, Point>()
+	private protected static readonly Dictionary<SudokuSquare, Point> squareMap = new Dictionary<SudokuSquare, Point>()
 	{
 		{ SudokuSquare.N,      new Point( 0, -1) },
 		{ SudokuSquare.NE,     new Point( 1, -1) },

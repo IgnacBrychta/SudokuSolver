@@ -84,9 +84,8 @@ public partial class SudokuGUI
 			for (int j = 0; j < sideLength; j++)
 			{
 				RichTextBox sudokuCell = sudokuGridGUI[i, j];
-				//int digitUI = GetCellDigit(sudokuCell.Text);
 				int lastDigit = lastGeneratedSudokuGrid[i, j];
-				if (lastDigit != Sudoku.emptyCellValue)
+				if (lastDigit != Sudoku.emptyCellValue && sudokuCell.Text != string.Empty)
 				{
 					sudokuCell.Enabled = false;
 				}
