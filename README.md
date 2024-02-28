@@ -46,6 +46,6 @@ Program na vyřešení sudoku
 
 [simple-sudoku]: https://www.sudocue.net/fileformats.php
 [fotka-programu]: https://i.imgur.com/es00QYu.png
-[prubezne-sledovani]: https://lh6.googleusercontent.com/YVqrSAx15I3Sscc8BPp-8r4lzozkEPMWocW3phwtjFqzFUr4TgrAiStg8iH8P1dhdWwR8hqRP1qXP-R7ZctUYjXY_ftBRTscT5ne3qvQ6UjIa1Rv9G0jq_iOfvFoYLuqkw=w1280
+[prubezne-sledovani]: https://i.imgur.com/88nPS75.gif
 [manualni-reseni]: https://i.imgur.com/trh7Vki.png
 [generovani-sudoku]: https://i.imgur.com/f3Xrci8.png
