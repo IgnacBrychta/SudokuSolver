@@ -31,7 +31,7 @@ Program na vyřešení sudoku
 - Program ukládá sudoku do mřížky formátu [Simple Sudoku][simple-sudoku] (*.ss), která je pro člověka lehce pochopitelná
 
 <div align="center">
-    <img src="https://media.discordapp.net/attachments/1076565079333548184/1128794184904613908/2023-07-12_23_04_41-C__Users_orbit_Documents_sodoku.ss_-_Sublime_Text_UNREGISTERED.png?width=413&height=676" width=205 height=338>
+    <img src="https://i.imgur.com/trh7Vki.png" width=205 height=338>
 </div>
 
 ### Manuální řešení sudoku
