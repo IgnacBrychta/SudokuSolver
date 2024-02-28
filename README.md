@@ -45,7 +45,7 @@ Program na vyřešení sudoku
 - Měřítko programu se přizpůsobí tak, aby program byl použitelný na různých zařízeních
 
 [simple-sudoku]: https://www.sudocue.net/fileformats.php
-[fotka-programu]: https://imgur.com/qPg8gFS
+[fotka-programu]: https://i.imgur.com/qPg8gFS.png
 [prubezne-sledovani]: https://cdn.discordapp.com/attachments/1076565079333548184/1129493630118268939/sudoku_solver_timelapse.gif
 [manualni-reseni]: https://media.discordapp.net/attachments/1076565079333548184/1129492858345377952/2023-07-14_21_20_48-Sudoku_Solver_Ignac_Brychta_2023.png?width=808&height=676
 [generovani-sudoku]: https://media.discordapp.net/attachments/1076565079333548184/1129492858655744092/2023-07-14_21_12_48-Sudoku_Solver_Ignac_Brychta_2023.png?width=808&height=676
