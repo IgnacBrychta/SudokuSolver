@@ -31,7 +31,7 @@ Program na vyřešení sudoku
 - Program ukládá sudoku do mřížky formátu [Simple Sudoku][simple-sudoku] (*.ss), která je pro člověka lehce pochopitelná
 
 <div align="center">
-    <img src="https://i.imgur.com/trh7Vki.png" width=205 height=338>
+    <img src="https://i.imgur.com/OOpF75b.png" width=205 height=338>
 </div>
 
 ### Manuální řešení sudoku
@@ -46,6 +46,6 @@ Program na vyřešení sudoku
 
 [simple-sudoku]: https://www.sudocue.net/fileformats.php
 [fotka-programu]: https://i.imgur.com/es00QYu.png
-[prubezne-sledovani]: https://i.imgur.com/oH2AsRP.gif
+[prubezne-sledovani]: aaaaaaaa
 [manualni-reseni]: https://i.imgur.com/trh7Vki.png
 [generovani-sudoku]: https://i.imgur.com/f3Xrci8.png
